@@ -1,0 +1,44 @@
+#headerDiv {
+    background: linear-gradient(90deg, #ffffff, #87CEEB);
+    
+    margin-left: 10px;
+}
+
+#genreCol {
+    border: 2px solid rgb(81, 81, 238);
+    border-radius: 15px;
+    /* background-color: blue; */
+    z-index: 100;
+    transition: transform 0.5s ease-in-out;
+    /* transform: translateY(-100%); */
+    position: absolute;
+    top: 50px;
+    width: 150px;
+    background-color: rgb(61, 33, 240);
+}
+
+#genreTypes {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+
+#genreCol.show {
+    transform: translateY(0%);
+    transition: 0.5s ease-in-out;
+}
+
+#genreTypes:hover {
+    /* background-color: rgb(81, 81, 238); */
+    border-radius: 15px;
+    color: white;
+}
+
+#genre:hover {
+    border: 1px solid rgb(81, 81, 238);
+    padding: 0px 10px 0px 10px;
+    cursor: pointer;
+    border-radius: 15px;
+    transition: 0.1s ease-in-out;
+}

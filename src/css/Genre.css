@@ -1,0 +1,101 @@
+/* Import Poppins font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+
+#genreContainer {
+    font-family: 'Poppins', sans-serif;
+    /* Change the colors */
+    background-color: #13274F;
+    /* Make the background animated */
+    background-size: 400% 400%;
+    animation: gradient 10s ease infinite;
+    color: white;
+    height: 100%;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+#genreContainer>h1 {
+    animation: blink 1s 1s linear;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.genreImage {
+    background-repeat: no-repeat;
+    /* opacity: 0.5; */
+    height: 50px;
+    width: 50px;
+}
+
+.genreImage::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* background: linear-gradient(60deg, #133f85, #2070b6); */
+    height: 100%;
+    width: 100%;
+    opacity: 0.5;
+    z-index: -1;
+}
+
+.genreText {
+    opacity: 1;
+    font-weight: bold;
+    z-index: 100;
+}
+
+.genreImage:hover {
+    box-shadow: 10px 10px 10px #fff;
+    -moz-box-shadow: 0 0 10px #fff;
+    -webkit-box-shadow: 0 0 10px #fff;
+    cursor: pointer;
+}
+
+.clickedGlow {
+    box-shadow: 10px 10px 10px #fff;
+    -moz-box-shadow: 0 0 10px #fff;
+    -webkit-box-shadow: 0 0 10px #fff;
+}
+
+.genreBind .btn {
+    background: linear-gradient(60deg, #557f7e, #626094);
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: .5s;
+    color: white;
+    z-index: 1;
+}
+
+.btn:hover {
+    box-shadow: 10px 10px 10px #fff;
+    -moz-box-shadow: 0 0 10px #fff;
+    -webkit-box-shadow: 0 0 10px #fff;
+}
