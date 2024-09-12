@@ -37,7 +37,7 @@ const Header = ({ setSelectedGenre }) => {
     return (
         <>
             <div id="headerDiv" className="mt-2 flex justify-between">
-                <div className="">
+                <div className="text-white">
                     <span className="text-lg">NovaDigest</span>
                 </div>
                 <div id="genreDiv" className="flex flex-col items-center">

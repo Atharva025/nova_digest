@@ -1,5 +1,4 @@
 import "../src/css/Landing.css";
-import error_img from "../src/images/error.png";
 import { Link } from "react-router-dom";
 
 const Landing = () => {

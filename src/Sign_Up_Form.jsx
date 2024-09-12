@@ -2,8 +2,6 @@ import { Link, useNavigate } from "react-router-dom";
 import "../src/css/Sign_Up_Form.css";
 import Genres from "../src/components/Genre_Types";
 import { useState } from "react";
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
 
 const Sign_Up_Form = () => {
     const navigate = useNavigate();
@@ -63,12 +61,18 @@ const Sign_Up_Form = () => {
         const isValid = validateForm();
         if (isValid) {
             try {
+
+                const updatedFormData = {
+                    ...formData,
+                    genre: arr
+                }
+
                 const response = await fetch("http://localhost:3000/sign_up", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify(formData)
+                    body: JSON.stringify(updatedFormData)
                 });
 
                 if (response.ok) {

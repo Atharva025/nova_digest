@@ -8,10 +8,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    genre: [{
-        type: String,
-        required: true
-    }]
+    genre: [String]
 });
 
 export default mongoose.model('form_filling', userSchema);

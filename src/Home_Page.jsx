@@ -4,8 +4,9 @@ import "../src/css/Home_Page.css"
 import Header from './Header';
 import { useLocation } from "react-router-dom";
 import "../src/css/Loader.css";
-const apiKey = import.meta.env.VITE_API_KEY;
+// import { configDotenv } from 'dotenv';
 
+// configDotenv();
 
 const Home_Page = () => {
 
@@ -17,6 +18,7 @@ const Home_Page = () => {
 
     const location = useLocation();
     const { arr = [] } = location.state || {};
+
 
     useEffect(() => {
         if (arr.length > 0) {
@@ -75,7 +77,6 @@ const Home_Page = () => {
                 ) : news && <News_Card news={news} />}
 
             </div>
-            {/* <Footer setSelectedGenre={setSelectedGenre} /> */}
         </>
     )
 }

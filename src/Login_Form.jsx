@@ -1,9 +1,10 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "../src/css/Login_Form.css";
 import { useState, useContext } from "react";
 import { UserContext } from './userContext.js';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
+
 
 const Login_Form = () => {
     const navigate = useNavigate();
@@ -13,6 +14,8 @@ const Login_Form = () => {
     const [buttonClicked, setButtonClicked] = useState(false);
     const [closed, setClosed] = useState(false);
     const { setUser } = useContext(UserContext);
+    const location = useLocation();
+    const { arr = [] } = location.state || {};
 
     const handleSubmit = async (event) => {
         setButtonClicked(true);
@@ -59,7 +62,9 @@ const Login_Form = () => {
                         <label htmlFor="typePass" className="text-lg my-1">Password</label>
                         <input id="typePass" type="password" className="rounded-lg h-10 px-2 text-sm text-black" placeholder="Enter your Password" required
                             value={password} onChange={e => setPassword(e.target.value)} />
-                        <button type="submit" className="bg-blue-500 text-white rounded-lg px-4 py-2 mt-4">Login</button>
+                        <button onClick={() => {
+                            navigate("/home", { state: { arr } });
+                        }} type="submit" className="bg-blue-500 text-white rounded-lg px-4 py-2 mt-4">Login</button>
                     </div>
                 </form>
                 <div className="text-center">
