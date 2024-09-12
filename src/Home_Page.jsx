@@ -75,7 +75,6 @@ const Home_Page = () => {
 
                     </div>
                 ) : news && <News_Card news={news} />}
-
             </div>
         </>
     )
