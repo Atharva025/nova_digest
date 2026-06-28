@@ -5,17 +5,17 @@ import { UserContext } from "./userContext";
 
 const getAvatarStyle = (name) => {
   const hash = Array.from(name || '').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const gradients = [
-    'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
-    'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
-    'linear-gradient(135deg, #10b981 0%, #047857 100%)',
-    'linear-gradient(135deg, #f59e0b 0%, #b45309 100%)',
-    'linear-gradient(135deg, #ec4899 0%, #be185d 100%)',
+  const colors = [
+    '#3b82f6',
+    '#10b981',
+    '#f59e0b',
+    '#6366f1',
+    '#8b5cf6',
   ];
   return {
-    background: gradients[hash % gradients.length],
-    color: '#fff',
-    border: 'none',
+    background: 'var(--bg-elevated)',
+    color: colors[hash % colors.length],
+    border: '1px solid var(--border-strong)',
     fontWeight: 700,
   };
 };

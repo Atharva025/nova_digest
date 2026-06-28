@@ -215,98 +215,80 @@ const News_Full = () => {
 
       <Header />
 
-      {/* ─── HERO ─────────────────────────────────── */}
-      <section className="nd-article-hero">
-        {/* Background image */}
-        {decodedImg && (
-          <img
-            src={decodedImg}
-            alt=""
-            aria-hidden="true"
-            className="nd-article-hero-img"
-            style={{ opacity: imgLoaded ? 1 : 0, transition: 'opacity 0.6s ease' }}
-            onLoad={() => setImgLoaded(true)}
-            onError={e => { e.target.style.display = 'none'; }}
-          />
-        )}
-        {/* Gradient overlay */}
-        <div className="nd-article-hero-overlay" />
+      {/* ─── ARTICLE HEADER ─────────────────────────── */}
+      <div className="nd-container" style={{ maxWidth: '860px', padding: '40px 32px 0' }}>
+        {/* Back button */}
+        <button
+          onClick={() => navigate(-1)}
+          className="nd-btn nd-btn-ghost nd-btn-sm"
+          style={{ marginBottom: 24 }}
+        >
+          <ArrowLeft size={14} />
+          Back to Feed
+        </button>
 
-        {/* Hero content */}
-        <div className="nd-article-hero-content">
-          {/* Back button */}
-          <button
-            onClick={() => navigate(-1)}
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: 6,
-              padding: '6px 12px', borderRadius: 'var(--radius-md)',
-              background: 'rgba(255,255,255,0.10)',
-              backdropFilter: 'blur(8px)',
-              border: '1px solid rgba(255,255,255,0.15)',
-              color: 'rgba(255,255,255,0.75)',
-              fontSize: '0.8125rem', fontWeight: 500,
-              cursor: 'pointer', marginBottom: 28,
-              transition: 'background 0.15s, color 0.15s',
-            }}
-            onMouseEnter={e => { e.target.style.background = 'rgba(255,255,255,0.18)'; e.target.style.color = '#fff'; }}
-            onMouseLeave={e => { e.target.style.background = 'rgba(255,255,255,0.10)'; e.target.style.color = 'rgba(255,255,255,0.75)'; }}
-          >
-            <ArrowLeft size={14} />
-            Back to Feed
-          </button>
-
-          {/* Category badge */}
-          <div>
-            <span className="nd-article-category">
-              <Zap size={10} />
-              News
-            </span>
-          </div>
-
-          {/* Title */}
-          <h1 className="nd-article-title" style={{ color: '#fff', textShadow: '0 2px 12px rgba(0,0,0,0.4)' }}>
-            {decodedTitle || 'Article'}
-          </h1>
-
-          {/* Meta row */}
-          <div className="nd-article-meta" style={{ color: 'rgba(255,255,255,0.65)' }}>
-            {decodedAuthor && (
-              <>
-                <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                  <User size={13} />
-                  {decodedAuthor}
-                </span>
-                <span className="nd-article-meta-sep" style={{ background: 'rgba(255,255,255,0.3)' }} />
-              </>
-            )}
-            {!loading && getReadTime(text) && (
-              <>
-                <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                  <Clock size={13} />
-                  {getReadTime(text)}
-                </span>
-                <span className="nd-article-meta-sep" style={{ background: 'rgba(255,255,255,0.3)' }} />
-              </>
-            )}
-            <a
-              href={decodedUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: 'flex', alignItems: 'center', gap: 5,
-                color: 'rgba(255,255,255,0.65)',
-                textDecoration: 'none', fontSize: '0.875rem',
-              }}
-            >
-              <ExternalLink size={13} />
-              Source
-            </a>
-          </div>
+        {/* Category badge */}
+        <div style={{ marginBottom: 16 }}>
+          <span className="nd-badge nd-badge-blue">
+            <Zap size={10} />
+            News
+          </span>
         </div>
-      </section>
+
+        {/* Title */}
+        <h1 className="nd-article-title" style={{ fontFamily: 'Lora, Georgia, serif', fontSize: 'clamp(1.75rem, 5vw, 2.5rem)', fontWeight: 700, lineHeight: 1.25, margin: '0 0 20px', color: 'var(--text-primary)' }}>
+          {decodedTitle || 'Article'}
+        </h1>
+
+        {/* Meta row */}
+        <div className="nd-article-meta" style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
+          {decodedAuthor && (
+            <>
+              <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                <User size={13} style={{ color: 'var(--text-muted)' }} />
+                {decodedAuthor}
+              </span>
+              <span style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--border-strong)' }} />
+            </>
+          )}
+          {!loading && getReadTime(text) && (
+            <>
+              <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                <Clock size={13} style={{ color: 'var(--text-muted)' }} />
+                {getReadTime(text)}
+              </span>
+              <span style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--border-strong)' }} />
+            </>
+          )}
+          <a
+            href={decodedUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'flex', alignItems: 'center', gap: 5,
+              color: 'var(--accent)',
+              textDecoration: 'none', fontWeight: 600
+            }}
+          >
+            <ExternalLink size={13} />
+            Source
+          </a>
+        </div>
+      </div>
 
       {/* ─── ARTICLE BODY ─────────────────────────── */}
-      <main className="nd-article-page">
+      <main className="nd-article-page" style={{ paddingTop: 20 }}>
+        {/* Featured hero image framed inside content block */}
+        {decodedImg && (
+          <div style={{ width: '100%', borderRadius: 'var(--radius-lg)', overflow: 'hidden', marginBottom: 28, border: '1px solid var(--border-default)' }}>
+            <img
+              src={decodedImg}
+              alt=""
+              style={{ width: '100%', display: 'block', height: 'auto', maxHeight: '460px', objectFit: 'cover' }}
+              onError={e => { e.target.style.display = 'none'; }}
+            />
+          </div>
+        )}
 
         {/* ── Floating sticky toolbar ── */}
         <div className="nd-article-toolbar">

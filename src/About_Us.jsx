@@ -17,15 +17,15 @@ const FEATURES = [
 const About_Us = () => {
   const getTeamAvatarStyle = (name) => {
     const hash = Array.from(name || '').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    const gradients = [
-      'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
-      'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
-      'linear-gradient(135deg, #10b981 0%, #047857 100%)',
+    const colors = [
+      '#3b82f6',
+      '#10b981',
+      '#6366f1',
     ];
     return {
-      background: gradients[hash % gradients.length],
-      color: '#fff',
-      border: 'none',
+      background: 'var(--bg-elevated)',
+      color: colors[hash % colors.length],
+      border: '1px solid var(--border-strong)',
       fontWeight: 700,
     };
   };

@@ -40,7 +40,7 @@ const Bookmarks = () => {
           padding: '56px 24px 36px',
           textAlign: 'center',
           borderBottom: '1px solid var(--border-default)',
-          background: 'radial-gradient(ellipse at 50% -20%, rgba(99, 102, 241, 0.15) 0%, transparent 65%)',
+          background: 'radial-gradient(ellipse at 50% -20%, var(--accent-subtle) 0%, transparent 65%)',
         }}>
           <div style={{
             width: 52, height: 52,

@@ -68,30 +68,30 @@ const Header = ({ setSelectedGenre }) => {
     <div style={{ position: 'sticky', top: 0, zIndex: 100, width: '100%' }}>
       {showTicker && breaking.length > 0 && (
         <div style={{
-          background: 'linear-gradient(90deg, #6366f1 0%, #4f46e5 100%)',
-          color: '#fff',
+          background: 'var(--bg-secondary)',
+          color: 'var(--text-primary)',
           fontSize: '0.75rem',
-          fontWeight: 600,
-          padding: '6px 24px',
+          fontWeight: 500,
+          padding: '8px 24px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           overflow: 'hidden',
-          borderBottom: '1px solid rgba(255,255,255,0.08)'
+          borderBottom: '1px solid var(--border-default)'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, overflow: 'hidden', flex: 1 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, overflow: 'hidden', flex: 1 }}>
             <span style={{
-              background: '#ef4444',
+              background: '#991b1b',
               color: '#fff',
-              padding: '2px 6px',
-              borderRadius: 4,
+              padding: '3px 8px',
+              borderRadius: '2px',
               fontSize: '0.625rem',
-              fontWeight: 800,
+              fontWeight: 700,
               textTransform: 'uppercase',
-              letterSpacing: '0.05em',
+              letterSpacing: '0.08em',
             }}>Breaking</span>
-            <marquee scrollamount="4.5" style={{ margin: 0, padding: 0 }}>
-              {breaking.join('  •  ')}
+            <marquee scrollamount="3.5" style={{ margin: 0, padding: 0, color: 'var(--text-secondary)', fontWeight: 500 }}>
+              {breaking.join('   •   ')}
             </marquee>
           </div>
           <button 
@@ -99,7 +99,7 @@ const Header = ({ setSelectedGenre }) => {
             style={{
               background: 'none',
               border: 'none',
-              color: '#fff',
+              color: 'var(--text-muted)',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',

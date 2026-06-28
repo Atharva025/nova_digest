@@ -118,47 +118,47 @@ const Dashboard = () => {
             {/* Stats Deck */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 20 }}>
               {/* Streak */}
-              <div className="nd-card" style={{ padding: 24, display: 'flex', alignItems: 'center', gap: 20 }}>
+              <div className="nd-card" style={{ padding: 24, display: 'flex', alignItems: 'center', gap: 20, borderLeft: '3px solid var(--danger)' }}>
                 <div style={{
-                  background: 'rgba(239,68,68,0.08)', color: '#ef4444',
-                  width: 48, height: 48, borderRadius: 12,
+                  color: 'var(--danger)',
+                  width: 40, height: 40,
                   display: 'flex', alignItems: 'center', justifyContent: 'center'
                 }}>
-                  <Flame size={24} />
+                  <Flame size={22} />
                 </div>
                 <div>
-                  <p style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted)', margin: 0 }}>Reading Streak</p>
-                  <p style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-primary)', marginTop: 4 }}>{profile.readingStreak?.count || 0} Day{profile.readingStreak?.count !== 1 ? 's' : ''}</p>
+                  <p style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-muted)', margin: 0 }}>Reading Streak</p>
+                  <p style={{ fontSize: '1.375rem', fontWeight: 700, color: 'var(--text-primary)', marginTop: 4 }}>{profile.readingStreak?.count || 0} Day{profile.readingStreak?.count !== 1 ? 's' : ''}</p>
                 </div>
               </div>
 
               {/* Total Reads */}
-              <div className="nd-card" style={{ padding: 24, display: 'flex', alignItems: 'center', gap: 20 }}>
+              <div className="nd-card" style={{ padding: 24, display: 'flex', alignItems: 'center', gap: 20, borderLeft: '3px solid var(--accent)' }}>
                 <div style={{
-                  background: 'rgba(99,102,241,0.08)', color: 'var(--accent)',
-                  width: 48, height: 48, borderRadius: 12,
+                  color: 'var(--accent)',
+                  width: 40, height: 40,
                   display: 'flex', alignItems: 'center', justifyContent: 'center'
                 }}>
-                  <BookOpen size={24} />
+                  <BookOpen size={22} />
                 </div>
                 <div>
-                  <p style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted)', margin: 0 }}>Articles Read</p>
-                  <p style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-primary)', marginTop: 4 }}>{profile.readArticlesCount || 0}</p>
+                  <p style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-muted)', margin: 0 }}>Articles Read</p>
+                  <p style={{ fontSize: '1.375rem', fontWeight: 700, color: 'var(--text-primary)', marginTop: 4 }}>{profile.readArticlesCount || 0}</p>
                 </div>
               </div>
 
               {/* Bookmarks */}
-              <div className="nd-card" style={{ padding: 24, display: 'flex', alignItems: 'center', gap: 20 }}>
+              <div className="nd-card" style={{ padding: 24, display: 'flex', alignItems: 'center', gap: 20, borderLeft: '3px solid var(--success)' }}>
                 <div style={{
-                  background: 'rgba(16,185,129,0.08)', color: 'var(--success)',
-                  width: 48, height: 48, borderRadius: 12,
+                  color: 'var(--success)',
+                  width: 40, height: 40,
                   display: 'flex', alignItems: 'center', justifyContent: 'center'
                 }}>
-                  <Bookmark size={24} />
+                  <Bookmark size={22} />
                 </div>
                 <div>
-                  <p style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted)', margin: 0 }}>Saved Articles</p>
-                  <p style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-primary)', marginTop: 4 }}>{profile.bookmarkCount || 0}</p>
+                  <p style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-muted)', margin: 0 }}>Saved Articles</p>
+                  <p style={{ fontSize: '1.375rem', fontWeight: 700, color: 'var(--text-primary)', marginTop: 4 }}>{profile.bookmarkCount || 0}</p>
                 </div>
               </div>
             </div>

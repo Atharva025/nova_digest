@@ -89,7 +89,7 @@ const Home_Page = () => {
 
       {/* Search hero */}
       <div style={{
-        background: 'radial-gradient(ellipse at 50% -20%, rgba(99, 102, 241, 0.15) 0%, transparent 65%)',
+        background: 'radial-gradient(ellipse at 50% -20%, var(--accent-subtle) 0%, transparent 65%)',
         padding: '64px 24px 48px',
         textAlign: 'center',
         borderBottom: '1px solid var(--border-default)',
@@ -179,43 +179,43 @@ const Home_Page = () => {
           width: '100%'
         }}>
           {/* Weather Widget */}
-          <div className="nd-card" style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
+          <div className="nd-card" style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, borderLeft: '3px solid var(--accent)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <CloudSun size={24} style={{ color: 'var(--accent)', flexShrink: 0 }} />
+              <CloudSun size={20} style={{ color: 'var(--text-secondary)', flexShrink: 0 }} />
               <div>
-                <h4 style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted)', margin: 0 }}>Weather</h4>
-                <p style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-primary)', marginTop: 2 }}>New York, NY</p>
+                <h4 style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-muted)', margin: 0 }}>Weather</h4>
+                <p style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--text-primary)', marginTop: 2 }}>New York, NY</p>
               </div>
             </div>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
-              <span style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--text-primary)' }}>72°F</span>
-              <span style={{ fontSize: '0.75rem', color: 'var(--success)', fontWeight: 600, background: 'rgba(16,185,129,0.08)', padding: '2px 6px', borderRadius: 4 }}>Sunny</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <span style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'Lora, serif' }}>72°F</span>
+              <span style={{ fontSize: '0.6875rem', color: 'var(--success)', fontWeight: 600, border: '1px solid rgba(16,185,129,0.2)', padding: '2px 8px', borderRadius: '4px' }}>Sunny</span>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 2, fontSize: '0.75rem', color: 'var(--text-secondary)', textAlign: 'right' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 2, fontSize: '0.6875rem', color: 'var(--text-muted)', textAlign: 'right' }}>
               <span>Hum: 45%</span>
               <span>Wind: 8mph</span>
             </div>
           </div>
 
           {/* Market Index Widget */}
-          <div className="nd-card" style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <TrendingUp size={20} style={{ color: 'var(--accent)', flexShrink: 0 }} />
-              <h4 style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted)', margin: 0 }}>Markets</h4>
+          <div className="nd-card" style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, borderLeft: '3px solid var(--text-muted)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <TrendingUp size={20} style={{ color: 'var(--text-secondary)', flexShrink: 0 }} />
+              <h4 style={{ fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-muted)', margin: 0 }}>Markets</h4>
             </div>
-            <div style={{ display: 'flex', gap: 12, alignItems: 'center', overflowX: 'auto', flex: 1, justifyContent: 'flex-end' }}>
+            <div style={{ display: 'flex', gap: 16, alignItems: 'center', overflowX: 'auto', flex: 1, justifyContent: 'flex-end' }}>
               {[
                 { name: 'S&P 500', value: '5,432', diff: '+0.45%', up: true },
                 { name: 'NASDAQ', value: '17,654', diff: '+0.82%', up: true },
-                { name: 'Dow', value: '39,120', diff: '-0.12%', up: false },
-                { name: 'NIFTY', value: '23,501', diff: '+0.30%', up: true },
-              ].map(idx => (
-                <div key={idx.name} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', minWidth: 65 }}>
-                  <span style={{ fontSize: '0.6875rem', fontWeight: 600, color: 'var(--text-secondary)' }}>{idx.name}</span>
-                  <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--text-primary)', marginTop: 1 }}>{idx.value}</span>
+                { name: 'Dow Jones', value: '39,120', diff: '-0.12%', up: false },
+                { name: 'NIFTY 50', value: '23,501', diff: '+0.30%', up: true },
+              ].map((idx, index) => (
+                <div key={idx.name} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', minWidth: 70, borderRight: index === 3 ? 'none' : '1px solid var(--border-default)', paddingRight: index === 3 ? 0 : 12 }}>
+                  <span style={{ fontSize: '0.6875rem', fontWeight: 500, color: 'var(--text-muted)' }}>{idx.name}</span>
+                  <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--text-primary)', marginTop: 2 }}>{idx.value}</span>
                   <span style={{
-                    fontSize: '0.625rem', fontWeight: 700, color: idx.up ? 'var(--success)' : 'var(--danger)',
-                    marginTop: 1, display: 'inline-flex', alignItems: 'center'
+                    fontSize: '0.6875rem', fontWeight: 600, color: idx.up ? 'var(--success)' : 'var(--danger)',
+                    marginTop: 2, display: 'inline-flex', alignItems: 'center'
                   }}>
                     {idx.diff}
                   </span>
