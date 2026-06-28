@@ -34,7 +34,7 @@ const News_Card = ({ news, onBookmarkChange }) => {
   const handleTagChange = async (url, newTag) => {
     if (user) {
       try {
-        const res = await fetch('/bookmarks/tag', {
+        const res = await fetch('/api/bookmarks/tag', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username: user, url, tag: newTag }),
@@ -60,7 +60,7 @@ const News_Card = ({ news, onBookmarkChange }) => {
   const fetchBookmarks = async () => {
     if (user) {
       try {
-        const res = await fetch(`/bookmarks/${user}`);
+        const res = await fetch(`/api/bookmarks/${user}`);
         if (res.ok) {
           const data = await res.json();
           setBookmarks(data.bookmarks || []);
@@ -85,7 +85,7 @@ const News_Card = ({ news, onBookmarkChange }) => {
     let updated;
     if (isBookmarked(article.url)) {
       if (user) {
-        await fetch('/bookmarks', {
+        await fetch('/api/bookmarks', {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username: user, url: article.url }),
@@ -94,7 +94,7 @@ const News_Card = ({ news, onBookmarkChange }) => {
       updated = bookmarks.filter(b => b.url !== article.url);
     } else {
       if (user) {
-        await fetch('/bookmarks', {
+        await fetch('/api/bookmarks', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username: user, article }),

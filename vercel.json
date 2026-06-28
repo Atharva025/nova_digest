@@ -19,18 +19,6 @@
       "dest": "src/backend/index.js"
     },
     {
-      "src": "/login",
-      "dest": "src/backend/index.js"
-    },
-    {
-      "src": "/sign_up",
-      "dest": "src/backend/index.js"
-    },
-    {
-      "src": "/bookmarks(.*)",
-      "dest": "src/backend/index.js"
-    },
-    {
       "src": "/assets/(.*)",
       "dest": "/assets/$1"
     },

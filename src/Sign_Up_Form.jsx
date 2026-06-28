@@ -78,7 +78,7 @@ const Sign_Up_Form = () => {
     setLoading(true);
     setApiError('');
     try {
-      const response = await fetch("/sign_up", {
+      const response = await fetch("/api/sign_up", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...formData, genre: selectedGenres }),

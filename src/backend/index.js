@@ -34,7 +34,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors());
 
-app.post("/sign_up", async (req, res) => {
+app.post("/api/sign_up", async (req, res) => {
     try {
         const { username, password, genre } = req.body;
         
@@ -66,7 +66,7 @@ app.post("/sign_up", async (req, res) => {
     }
 });
 
-app.post("/login", async (req, res) => {
+app.post("/api/login", async (req, res) => {
     const { username, password } = req.body;
     try {
         if (!username || !password) {
@@ -105,7 +105,7 @@ app.post("/home", async (req, res) => {
 });
 
 // Bookmarks endpoints
-app.get("/bookmarks/:username", async (req, res) => {
+app.get("/api/bookmarks/:username", async (req, res) => {
     const { username } = req.params;
     try {
         let user = await Users.findOne({ username });
@@ -119,7 +119,7 @@ app.get("/bookmarks/:username", async (req, res) => {
     }
 });
 
-app.post("/bookmarks", async (req, res) => {
+app.post("/api/bookmarks", async (req, res) => {
     const { username, article, tag } = req.body;
     try {
         let user = await Users.findOne({ username });
@@ -140,7 +140,7 @@ app.post("/bookmarks", async (req, res) => {
     }
 });
 
-app.delete("/bookmarks", async (req, res) => {
+app.delete("/api/bookmarks", async (req, res) => {
     const { username, url } = req.body;
     try {
         let user = await Users.findOne({ username });
@@ -156,7 +156,7 @@ app.delete("/bookmarks", async (req, res) => {
     }
 });
 
-app.put("/bookmarks/tag", async (req, res) => {
+app.put("/api/bookmarks/tag", async (req, res) => {
     const { username, url, tag } = req.body;
     try {
         let user = await Users.findOne({ username });

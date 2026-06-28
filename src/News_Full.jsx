@@ -98,7 +98,7 @@ const News_Full = () => {
     const checkBookmark = async () => {
       if (user) {
         try {
-          const res = await fetch(`/bookmarks/${user}`);
+          const res = await fetch(`/api/bookmarks/${user}`);
           if (res.ok) {
             const data = await res.json();
             setBookmarked((data.bookmarks || []).some(b => b.url === decodedUrl));
@@ -172,7 +172,7 @@ const News_Full = () => {
     const article = { title: decodedTitle, author: decodedAuthor, url: decodedUrl, urlToImage: decodedImg };
     if (bookmarked) {
       if (user) {
-        await fetch('/bookmarks', {
+        await fetch('/api/bookmarks', {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username: user, url: decodedUrl }),
@@ -183,7 +183,7 @@ const News_Full = () => {
       }
     } else {
       if (user) {
-        await fetch('/bookmarks', {
+        await fetch('/api/bookmarks', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username: user, article }),

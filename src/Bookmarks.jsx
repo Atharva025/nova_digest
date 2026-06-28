@@ -16,7 +16,7 @@ const Bookmarks = () => {
     setLoading(true);
     if (user) {
       try {
-        const res = await fetch(`/bookmarks/${user}`);
+        const res = await fetch(`/api/bookmarks/${user}`);
         if (res.ok) {
           const data = await res.json();
           setBookmarks(data.bookmarks || []);
