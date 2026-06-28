@@ -10,7 +10,7 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import cors from "cors";
 import axios from 'axios';
-import { JSDOM } from 'jsdom';
+import { JSDOM, VirtualConsole } from 'jsdom';
 import { Readability } from '@mozilla/readability';
 import "./connection.js";
 import Users from './user.js';
@@ -332,7 +332,11 @@ app.get("/api/scrape", async (req, res) => {
             html = await resFetch.text();
         }
 
-        const dom = new JSDOM(html, { url });
+        const virtualConsole = new VirtualConsole();
+        virtualConsole.on("error", () => {});
+        virtualConsole.on("warn", () => {});
+
+        const dom = new JSDOM(html, { url, virtualConsole });
         const reader = new Readability(dom.window.document);
         const article = reader.parse();
 
