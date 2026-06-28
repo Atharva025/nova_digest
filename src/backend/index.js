@@ -22,7 +22,11 @@ const CACHE_TTL = 15 * 60 * 1000; // 15 minutes
 
 const API_KEYS = process.env.NEWS_API_KEYS 
     ? process.env.NEWS_API_KEYS.split(',').map(k => k.trim())
-    : ['dbd670c48d86436181733a293a881787'];
+    : [];
+
+if (API_KEYS.length === 0) {
+    console.warn("WARNING: NEWS_API_KEYS environment variable is not defined!");
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
