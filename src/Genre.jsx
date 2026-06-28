@@ -1,60 +1,107 @@
-import "../src/css/Genre.css"
-import Genres from "../src/components/Genre_Types";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Footer from "./Footer";
+import Genres from "../src/components/Genre_Types";
+import { Check, ArrowRight, Newspaper } from 'lucide-react';
+
+const GENRE_ICONS = {
+  Politics: '🏛️', Sports: '⚽', Movies: '🎬',
+  Finance: '📈', International: '🌍', National: '🇮🇳',
+};
 
 const Genre = () => {
-    const [arr, setArr] = useState([]);
-    const navigate = useNavigate();
+  const [selected, setSelected] = useState([]);
+  const navigate = useNavigate();
 
-    const handleSelectGenre = (genreName) => {
-        if (arr.includes(genreName)) {
-            setArr(arr.filter(name => name !== genreName));
-        } else {
-            setArr([...arr, genreName]);
-        }
-    }
+  const toggle = (name) => {
+    setSelected(prev =>
+      prev.includes(name) ? prev.filter(n => n !== name) : [...prev, name]
+    );
+  };
 
-    return (
-        <>
-            <div id="genreContainer" className="h-[100vh] flex flex-col text-center">
-                <h1 className="text-4xl mt-5">One Last Step!</h1>
-                <div className="rounded-lg flex flex-col justify-center flex-wrap items-center genreBind">
-                    <h2 className="text-sm my-3 sm:text-lg md:text-xl lg:text-2xl">Please Select what you would read! </h2>
-                    <span className="text-md">Click on a Genre to Select it. Click Again to De-Select it.</span>
+  const canProceed = selected.length >= 2;
 
-                    <span>
-                        <span className="font-semibold text-md">Your Genres: </span>
-                        {arr.map((item, index) => (
-                            <>
-                                <span className="text-md" key={index}>
-                                    {item + ", "}
-                                </span>
-                            </>
-                        ))}
-                    </span>
+  return (
+    <div className="nd-genre-page">
+      <div style={{ maxWidth: 900, margin: '0 auto' }}>
 
-                    <div className="flex my-5 flex-wrap justify-center">
-                        {Genres.map((item, index) => {
-                            return (<>
-                                <div onClick={() => handleSelectGenre(item.name)} style={{ backgroundImage: `url(${item.image})` }} className={`h-[10rem] border rounded-lg w-full flex justify-center flex-col genreImage md:w-[40rem] md:h[40rem] lg:w-[25rem] lg:h-[20rem] lg:flex-row`} key={index}>
-                                    <h2 className="genreText">{item.name}</h2>
-                                </div>
-                            </>)
-                        })}
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 40 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '1.25rem' }}>
+            <Newspaper size={20} style={{ color: 'var(--accent)' }} />
+            <span className="nd-logo-text">NovaDigest</span>
+          </div>
+        </div>
 
-                    </div>
-                    <button
-                        onClick={() => {
-                            (arr && arr.length > 1) ? navigate("/home", { state: { arr } }) : alert("Please Select atleast 2 Genres!")
-                        }}
-                        className="button mb-2">Done</button>
-                </div>
+        {/* Header */}
+        <div className="nd-genre-header">
+          <h1 className="nd-genre-heading">What do you want to read?</h1>
+          <p className="nd-genre-sub">Select at least 2 interests to personalize your news feed.</p>
+        </div>
+
+        {/* Selected pills */}
+        <div className="nd-genre-selected-pills">
+          {selected.length === 0 ? (
+            <span style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>No genres selected yet</span>
+          ) : selected.map(name => (
+            <span key={name} className="nd-chip nd-chip-blue">
+              <Check size={11} />
+              {GENRE_ICONS[name]} {name}
+            </span>
+          ))}
+        </div>
+
+        {/* Genre grid */}
+        <div className="nd-genre-grid">
+          {Genres.map(g => (
+            <div
+              key={g.name}
+              className={`nd-genre-tile ${selected.includes(g.name) ? 'selected' : ''}`}
+              onClick={() => toggle(g.name)}
+            >
+              <img
+                src={g.image}
+                alt={g.name}
+                className="nd-genre-tile-img"
+                onError={e => { e.target.style.display = 'none'; }}
+              />
+              {/* Colored fallback background when no image */}
+              <div style={{
+                position: 'absolute', inset: 0,
+                background: 'linear-gradient(135deg, #1e293b, #0f172a)',
+                zIndex: -1,
+              }} />
+              <div className="nd-genre-tile-check">
+                <Check size={14} color="#fff" strokeWidth={3} />
+              </div>
+              <div className="nd-genre-tile-overlay">
+                <span className="nd-genre-tile-name">
+                  {GENRE_ICONS[g.name]} {g.name}
+                </span>
+              </div>
             </div>
-            <Footer />
-        </>
-    )
-}
+          ))}
+        </div>
+
+        {/* CTA */}
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <button
+            className="nd-btn nd-btn-primary"
+            style={{ minWidth: 200, opacity: canProceed ? 1 : 0.45, cursor: canProceed ? 'pointer' : 'not-allowed' }}
+            onClick={() => {
+              if (canProceed) navigate("/home", { state: { arr: selected } });
+            }}
+          >
+            Start Reading
+            <ArrowRight size={16} />
+          </button>
+        </div>
+        {!canProceed && (
+          <p style={{ textAlign: 'center', marginTop: 10, fontSize: '0.8125rem', color: 'var(--text-muted)' }}>
+            Select {2 - selected.length} more to continue
+          </p>
+        )}
+      </div>
+    </div>
+  );
+};
 
 export default Genre;

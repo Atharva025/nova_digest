@@ -1,78 +1,198 @@
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import "../src/css/Login_Form.css";
-import { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useContext, useEffect } from "react";
 import { UserContext } from './userContext.js';
-import Alert from '@mui/material/Alert';
-import Stack from '@mui/material/Stack';
+import { Newspaper, Mail, Lock, Eye, EyeOff, AlertCircle, CheckCircle, Quote } from 'lucide-react';
 
+const QUOTES = [
+  {
+    text: "NovaDigest has completely changed how I read news. The curated feeds keep me focused on the topics I care about most without the sensationalist clutter.",
+    author: "Elena Rostova, Software Engineer"
+  },
+  {
+    text: "The audio synthesis makes it incredibly easy to catch up on the daily digest during my morning runs. Premium quality, absolutely seamless.",
+    author: "Marcus Vance, Financial Analyst"
+  },
+  {
+    text: "A clean interface, no ads, and custom font scaling. It is rare to find a news portal designed this thoughtfully for visual comfort.",
+    author: "Dr. Sarah Jenkins, Researcher"
+  }
+];
 
 const Login_Form = () => {
-    const navigate = useNavigate();
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [loginResponse, setLoginResponse] = useState(false);
-    const [buttonClicked, setButtonClicked] = useState(false);
-    const [closed, setClosed] = useState(false);
-    const { setUser } = useContext(UserContext);
-    const location = useLocation();
-    const { arr = [] } = location.state || {};
+  const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPass, setShowPass] = useState(false);
+  const [alertState, setAlertState] = useState(null); // null | 'success' | 'error'
+  const [alertMsg, setAlertMsg] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { setUser } = useContext(UserContext);
+  const [quoteIndex, setQuoteIndex] = useState(0);
 
-    const handleSubmit = async (event) => {
-        setButtonClicked(true);
-        event.preventDefault();
-        try {
-            const response = await fetch("http://localhost:3000/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ username, password })
-            });
+  // Quote rotation
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setQuoteIndex((prev) => (prev + 1) % QUOTES.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, []);
 
-            if (response.ok) {
-                const userData = await response.json();
-                if (userData.user) {
-                    console.log('Login successful');
-                    setLoginResponse(true);
-                    setUser(userData.user.username);
-                    navigate("/home");
-                }
-            } else {
-                console.log('Error logging in:', response.status);
-                setLoginResponse(false);
-            }
-        } catch (error) {
-            console.log('Error:', error);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setAlertState(null);
+    try {
+      const response = await fetch("/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (response.ok) {
+        const userData = await response.json();
+        if (userData.user) {
+          setUser(userData.user.username);
+          setAlertState('success');
+          setAlertMsg('Login successful! Redirecting…');
+          setTimeout(() => navigate("/home"), 800);
         }
-    };
+      } else {
+        const err = await response.json();
+        setAlertState('error');
+        setAlertMsg(err.error || 'Invalid credentials. Please try again.');
+      }
+    } catch {
+      setAlertState('error');
+      setAlertMsg('Cannot connect to server. Is the backend running?');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    return (
-        <div className="h-screen flex justify-center items-center">
-            <Stack style={{ display: buttonClicked === true ? "block" : "none" }} className="absolute top-0" sx={{ width: '50%', height: '10%' }} spacing={5}>
-                <Alert onClose={() => { setClosed(true) }}
-                    style={{ display: closed === true ? "none" : "flex" }} variant="filled" severity={loginResponse === true ? "success" : "error"}>{loginResponse === true ? "Login Successful" : "Error while Logging In"}</Alert>
-            </Stack >
-            <div className="flex flex-col">
-                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl">Welcome to NovaDigest</h1>
-                <form onSubmit={handleSubmit} className="mt-4">
-                    <div className="flex flex-col my-5">
-                        <label htmlFor="typeName" className="text-lg my-1">Name</label>
-                        <input id="typeName" type="text" className="rounded-lg h-10 px-2 text-sm text-black" placeholder="Enter your Name" required
-                            value={username} onChange={e => setUsername(e.target.value)} />
-                        <label htmlFor="typePass" className="text-lg my-1">Password</label>
-                        <input id="typePass" type="password" className="rounded-lg h-10 px-2 text-sm text-black" placeholder="Enter your Password" required
-                            value={password} onChange={e => setPassword(e.target.value)} />
-                        <button onClick={() => {
-                            navigate("/home", { state: { arr } });
-                        }} type="submit" className="bg-blue-500 text-white rounded-lg px-4 py-2 mt-4">Login</button>
-                    </div>
-                </form>
-                <div className="text-center">
-                    <span className="text-sm">Not a User? <Link to="/sign_up" className="text-blue-800">Sign Up</Link></span>
-                </div>
-            </div>
+  return (
+    <div className="nd-auth-container">
+      {/* Left Pane - Promotional Branding */}
+      <div className="nd-auth-left">
+        <div className="nd-auth-left-logo">
+          <Newspaper size={24} style={{ color: 'var(--accent)' }} />
+          <span className="nd-logo-text">NovaDigest</span>
         </div>
-    );
+
+        <div className="nd-auth-left-content">
+          <h1 className="nd-auth-left-title">
+            Curated intelligence, tailored for you.
+          </h1>
+          <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6, fontSize: '0.9375rem' }}>
+            Access a clean, modern, and customizable news workspace. Control how you consume, hear, and organize your daily updates.
+          </p>
+
+          {/* Testimonial Quote Carousel */}
+          <div className="nd-quote-card">
+            <Quote size={24} style={{ color: 'var(--border-strong)', position: 'absolute', top: 12, right: 16 }} />
+            <p className="nd-quote-text">
+              "{QUOTES[quoteIndex].text}"
+            </p>
+            <p className="nd-quote-author">
+              — {QUOTES[quoteIndex].author}
+            </p>
+          </div>
+        </div>
+
+        <div className="nd-auth-left-footer">
+          &copy; {new Date().getFullYear()} NovaDigest. All rights reserved.
+        </div>
+      </div>
+
+      {/* Right Pane - Form Card */}
+      <div className="nd-auth-right">
+        <div className="nd-auth-card" style={{ boxShadow: 'none', border: '1px solid var(--border-default)' }}>
+          <div className="nd-auth-logo" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 6, gap: 6 }}>
+            <Newspaper size={20} style={{ color: 'var(--accent)' }} />
+            <span className="nd-logo-text">NovaDigest</span>
+          </div>
+          <p className="nd-auth-subtitle" style={{ textAlign: 'center', marginBottom: 28 }}>
+            Welcome back. Sign in to your account.
+          </p>
+
+          {/* Alert */}
+          {alertState && (
+            <div className={`nd-alert ${alertState === 'success' ? 'nd-alert-success' : 'nd-alert-error'}`} style={{ marginBottom: 20 }}>
+              {alertState === 'success' ? <CheckCircle size={16} /> : <AlertCircle size={16} />}
+              {alertMsg}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit}>
+            {/* Username */}
+            <div className="nd-form-group">
+              <label className="nd-input-label" htmlFor="loginName">Username</label>
+              <div className="nd-input-wrapper">
+                <Mail size={16} className="nd-input-icon" />
+                <input
+                  id="loginName"
+                  type="text"
+                  className="nd-input nd-input-with-icon"
+                  placeholder="Enter your username"
+                  value={username}
+                  onChange={e => setUsername(e.target.value)}
+                  required
+                  autoFocus
+                />
+              </div>
+            </div>
+
+            {/* Password */}
+            <div className="nd-form-group">
+              <label className="nd-input-label" htmlFor="loginPass">Password</label>
+              <div className="nd-input-wrapper">
+                <Lock size={16} className="nd-input-icon" />
+                <input
+                  id="loginPass"
+                  type={showPass ? 'text' : 'password'}
+                  className="nd-input nd-input-with-icon"
+                  style={{ paddingRight: 44 }}
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPass(v => !v)}
+                  style={{
+                    position: 'absolute', right: 14,
+                    background: 'none', border: 'none',
+                    color: 'var(--text-muted)', cursor: 'pointer',
+                    display: 'flex', alignItems: 'center',
+                  }}
+                >
+                  {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="nd-btn nd-btn-primary"
+              style={{ width: '100%', marginTop: 8 }}
+              disabled={loading}
+            >
+              {loading ? 'Signing in…' : 'Sign in'}
+            </button>
+          </form>
+
+          <div className="nd-divider" />
+
+          <p style={{ textAlign: 'center', fontSize: '0.875rem', color: 'var(--text-secondary)', margin: 0 }}>
+            Don't have an account?{' '}
+            <Link to="/sign_up" style={{ color: 'var(--accent)', fontWeight: 600, textDecoration: 'none' }}>
+              Sign up
+            </Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Login_Form;

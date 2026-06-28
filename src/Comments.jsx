@@ -1,54 +1,143 @@
-import { useState } from "react";
-import "../src/css/Comments.css";
-import { AllComments, addComment } from "./components/CommentsAll";
+import { useState, useEffect, useContext } from "react";
+import { MessageSquare, Send } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { UserContext } from "./userContext";
 
-const Comments = () => {
+const getAvatarStyle = (name) => {
+  const hash = Array.from(name || '').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const gradients = [
+    'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
+    'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
+    'linear-gradient(135deg, #10b981 0%, #047857 100%)',
+    'linear-gradient(135deg, #f59e0b 0%, #b45309 100%)',
+    'linear-gradient(135deg, #ec4899 0%, #be185d 100%)',
+  ];
+  return {
+    background: gradients[hash % gradients.length],
+    color: '#fff',
+    border: 'none',
+    fontWeight: 700,
+  };
+};
 
-    const [comment, setComment] = useState("");
-    const [comments, setComments] = useState([]);
+const Comments = ({ articleUrl }) => {
+  const { user } = useContext(UserContext);
+  const [comment, setComment] = useState('');
+  const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    function commentClicked() {
-        const commentObject = {
-            userName: "New User",
-            comment: comment,
-        };
-
-        // setComments([...comments, commentObject]);
-        // setAllComments([...allComments, commentObject]);
-        const newComments = addComment(commentObject);
-        localStorage.setItem('comments', JSON.stringify(newComments));
-        setComments(newComments);
-        setComment("");
-        console.log(AllComments);
+  // Fetch comments from MongoDB
+  const fetchComments = async () => {
+    if (!articleUrl) return;
+    try {
+      const res = await fetch(`/api/comments?url=${encodeURIComponent(articleUrl)}`);
+      if (res.ok) {
+        const data = await res.json();
+        setComments(data);
+      }
+    } catch (err) {
+      console.error("Error loading comments:", err);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    return (
-        <>
-            <div className="border-2 w-full rounded-xl">
-                <div className="">
-                    <div className="flex  justify-center flex-col">
-                        <span className="text-center">This is the Comments Section</span>
-                        <span id="addAComment">Add a Comment</span>
-                        <input className="w-full h-[50px] text-black rounded-2xl border-2 my-2 sm:w-[500px]" placeholder="Type Something!" value={comment} onChange={(e) => setComment(e.target.value)} />
-                    </div>
-                    <button onClick={commentClicked} className="button px-4 py-1">Comment</button>
+  useEffect(() => {
+    fetchComments();
+  }, [articleUrl]);
+
+  const submit = async () => {
+    if (!comment.trim() || !user || !articleUrl) return;
+    try {
+      const res = await fetch('/api/comments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: user,
+          url: articleUrl,
+          comment: comment.trim()
+        })
+      });
+      if (res.ok) {
+        setComment('');
+        fetchComments(); // Reload comments list
+      }
+    } catch (err) {
+      console.error("Error posting comment:", err);
+    }
+  };
+
+  return (
+    <div className="nd-comments" style={{ marginTop: 40, borderTop: '1px solid var(--border-default)', paddingTop: 32 }}>
+      <h3 className="nd-comments-title" style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '0 0 24px', fontSize: '1.25rem', color: 'var(--text-primary)' }}>
+        <MessageSquare size={20} style={{ color: 'var(--accent)' }} />
+        Discussion {comments.length > 0 && <span style={{ color: 'var(--text-muted)', fontWeight: 400, fontSize: '0.875rem' }}>({comments.length})</span>}
+      </h3>
+
+      {/* Input */}
+      {user ? (
+        <div className="nd-comment-input-area" style={{ marginBottom: 28 }}>
+          <textarea
+            className="nd-input"
+            style={{ height: 'auto', minHeight: 80, padding: '12px 16px', resize: 'vertical', lineHeight: 1.5, background: 'var(--bg-subtle)' }}
+            placeholder={`Comment as ${user}…`}
+            value={comment}
+            onChange={e => setComment(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter' && e.ctrlKey) submit(); }}
+          />
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 8 }}>
+            <button className="nd-btn nd-btn-primary nd-btn-sm" onClick={submit} disabled={!comment.trim()}>
+              <Send size={13} />
+              Post comment
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div style={{
+          textAlign: 'center', padding: '20px',
+          background: 'var(--bg-subtle)', border: '1px dashed var(--border-default)',
+          borderRadius: 'var(--radius-lg)', marginBottom: 28
+        }}>
+          <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', margin: '0 0 12px' }}>
+            You must be logged in to participate in the discussion.
+          </p>
+          <Link to="/login" className="nd-btn nd-btn-primary nd-btn-sm" style={{ display: 'inline-flex', textDecoration: 'none' }}>
+            Sign In to Comment
+          </Link>
+        </div>
+      )}
+
+      {/* Comment list */}
+      {loading ? (
+        <div style={{ display: 'flex', justifyContent: 'center', padding: '16px 0' }}>
+          <div className="nd-spinner" style={{ width: 24, height: 24 }} />
+        </div>
+      ) : comments.length === 0 ? (
+        <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', textAlign: 'center', padding: '24px 0' }}>
+          Be the first to comment.
+        </p>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {comments.map((c, i) => (
+            <div className="nd-comment-item" key={c._id || i} style={{ display: 'flex', gap: 16, alignItems: 'flex-start', padding: '12px 0' }}>
+              <div className="nd-comment-avatar" style={{ ...getAvatarStyle(c.userName), width: 36, height: 36, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.875rem', flexShrink: 0 }}>
+                {c.userName?.[0]?.toUpperCase() || 'U'}
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+                  <p className="nd-comment-username" style={{ margin: 0, fontWeight: 700, fontSize: '0.875rem', color: 'var(--text-primary)' }}>{c.userName}</p>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                    {c.createdAt ? new Date(c.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : ''}
+                  </span>
                 </div>
-
-                <span>Comments: </span>
-
-                {comments.map((item, index) => {
-                    return (
-                        <>
-                            <div className="flex flex-col border-2 mb-2" key={index}>
-                                <span>{item.userName}</span>
-                                <span>{item.comment}</span>
-                            </div>
-                        </>
-                    )
-                })}
+                <p className="nd-comment-text" style={{ margin: '4px 0 0', fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>{c.comment}</p>
+              </div>
             </div>
-        </>
-    )
-}
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
-export default Comments
+export default Comments;

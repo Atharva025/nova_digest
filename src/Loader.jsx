@@ -1,19 +1,30 @@
-import "../src/css/Loader.css";
-import PropTypes from 'prop-types';
-const Loader = ({ size }) => {
-    const loaderSize = size === "small" ? "50px" : "100px";
-    return (
-        <>
-            <div>
-                <div className="container" style={{ width: loaderSize, height: loaderSize }}>
-                </div>
-            </div>
-        </>
-    )
-}
+import { Newspaper } from 'lucide-react';
 
-Loader.propTypes = {
-    size: PropTypes.string,
-}
+const Loader = () => (
+  <div style={{
+    minHeight: '100vh',
+    background: 'var(--bg-primary)',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 24,
+  }}>
+    {/* Animated logo */}
+    <div style={{
+      display: 'flex', alignItems: 'center', gap: 6,
+      fontSize: '1.5rem',
+      opacity: 0.9,
+    }}>
+      <Newspaper size={24} style={{ color: 'var(--accent)' }} />
+      <span className="nd-logo-text">NovaDigest</span>
+    </div>
 
-export default Loader
+    {/* Spinner */}
+    <div className="nd-spinner" />
+
+    <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>Loading your feed…</p>
+  </div>
+);
+
+export default Loader;

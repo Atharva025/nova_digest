@@ -1,92 +1,258 @@
-import { useContext, useState } from "react";
-import "../src/css/Header.css";
-import Genres from "../src/components/Genre_Types";
-import { Link } from "react-router-dom";
+import { useContext, useState, useRef, useEffect } from "react";
+import PropTypes from 'prop-types';
+import { Link, useLocation } from "react-router-dom";
 import { UserContext } from "./userContext";
+import { Newspaper, ChevronDown, Bookmark, Sun, Moon, LogOut, User, X, Check } from 'lucide-react';
+import Genres from "../src/components/Genre_Types";
+
+const GENRE_ICONS = {
+  Politics: '🏛️',
+  Sports:   '⚽',
+  Movies:   '🎬',
+  Finance:  '📈',
+  International: '🌍',
+  National: '🇮🇳',
+};
 
 const Header = ({ setSelectedGenre }) => {
-    const [showGenreCol, setShowGenreCol] = useState(false);
-    const { user, setUser } = useContext(UserContext);
-    const [checkCount, setCheckCount] = useState(1);
+  const { user, setUser } = useContext(UserContext);
+  const [showGenreMenu, setShowGenreMenu] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
+  const [breaking, setBreaking] = useState([]);
+  const [showTicker, setShowTicker] = useState(true);
+  const genreRef = useRef(null);
+  const userRef  = useRef(null);
+  const location = useLocation();
 
-
-    const [animatedGenreCol, setAnimatedGenreCol] = useState(false);
-
-    function displayLogOutPage() {
-        setCheckCount(() => checkCount + 1);
-        if (checkCount === 10) {
-            setCheckCount(1);
+  useEffect(() => {
+    fetch('/api/news?q=breaking')
+      .then(r => r.json())
+      .then(d => {
+        if (d.articles) {
+          setBreaking(d.articles.slice(0, 5).map(a => a.title));
         }
-    }
+      })
+      .catch(() => {});
+  }, []);
 
-    function removeDetails() {
-        setUser(null);
-    }
+  // Close menus when clicking outside
+  useEffect(() => {
+    const handler = (e) => {
+      if (genreRef.current && !genreRef.current.contains(e.target)) setShowGenreMenu(false);
+      if (userRef.current  && !userRef.current.contains(e.target))  setShowUserMenu(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
 
+  const toggleTheme = () => {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+    localStorage.setItem('theme', next);
+    document.body.classList.add(next);
+    document.body.classList.remove(theme);
+  };
 
-    function displayGenreCol() {
-        setShowGenreCol(true);
-        setAnimatedGenreCol(true);
-    }
+  const handleLogout = () => {
+    setUser(null);
+    setShowUserMenu(false);
+  };
 
-    function hideGenreCol() {
-        setShowGenreCol(false);
-        setAnimatedGenreCol(false);
-    }
+  const handleGenreSelect = (name) => {
+    if (setSelectedGenre) setSelectedGenre(name);
+    setShowGenreMenu(false);
+  };
 
-    return (
-        <>
-            <div id="headerDiv" className="mt-2 flex justify-between">
-                <div className="text-white">
-                    <span className="text-lg">NovaDigest</span>
+  return (
+    <div style={{ position: 'sticky', top: 0, zIndex: 100, width: '100%' }}>
+      {showTicker && breaking.length > 0 && (
+        <div style={{
+          background: 'linear-gradient(90deg, #6366f1 0%, #4f46e5 100%)',
+          color: '#fff',
+          fontSize: '0.75rem',
+          fontWeight: 600,
+          padding: '6px 24px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          overflow: 'hidden',
+          borderBottom: '1px solid rgba(255,255,255,0.08)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, overflow: 'hidden', flex: 1 }}>
+            <span style={{
+              background: '#ef4444',
+              color: '#fff',
+              padding: '2px 6px',
+              borderRadius: 4,
+              fontSize: '0.625rem',
+              fontWeight: 800,
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
+            }}>Breaking</span>
+            <marquee scrollamount="4.5" style={{ margin: 0, padding: 0 }}>
+              {breaking.join('  •  ')}
+            </marquee>
+          </div>
+          <button 
+            onClick={() => setShowTicker(false)}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#fff',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              padding: 0,
+              marginLeft: 12,
+              opacity: 0.8
+            }}
+          >
+            <X size={12} />
+          </button>
+        </div>
+      )}
+      <nav className="nd-navbar" style={{ position: 'static' }}>
+        <div className="nd-navbar-inner">
+
+          <Link to="/home" className="nd-logo" style={{ gap: 6 }}>
+          <Newspaper size={18} style={{ color: 'var(--accent)' }} />
+          <span className="nd-logo-text">NovaDigest</span>
+        </Link>
+
+        {/* Center nav links */}
+        <div className="nd-nav-links">
+          <Link
+            to="/home"
+            className={`nd-nav-link ${location.pathname === '/home' ? 'active' : ''}`}
+          >
+            Feed
+          </Link>
+
+          {/* Genre dropdown */}
+          <div style={{ position: 'relative' }} ref={genreRef}>
+            <button
+              className="nd-nav-link"
+              onClick={() => setShowGenreMenu(v => !v)}
+              style={{ display: 'flex', alignItems: 'center', gap: 4 }}
+            >
+              Browse
+              <ChevronDown
+                size={14}
+                style={{
+                  transition: 'transform 0.2s',
+                  transform: showGenreMenu ? 'rotate(180deg)' : 'rotate(0deg)',
+                }}
+              />
+            </button>
+            {showGenreMenu && (
+              <div className="nd-genre-menu">
+                {Genres.map((g) => (
+                  <button
+                    key={g.name}
+                    className="nd-genre-item"
+                    onClick={() => handleGenreSelect(g.name)}
+                  >
+                    <span>{GENRE_ICONS[g.name] || '📰'}</span>
+                    {g.name}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <Link
+            to="/bookmarks"
+            className={`nd-nav-link ${location.pathname === '/bookmarks' ? 'active' : ''}`}
+          >
+            <Bookmark size={14} />
+            Saved
+          </Link>
+        </div>
+
+        {/* Right actions */}
+        <div className="nd-nav-actions">
+          {/* Theme toggle */}
+          <button
+            className="nd-icon-btn"
+            onClick={toggleTheme}
+            title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          >
+            {theme === 'dark'
+              ? <Sun size={16} style={{ color: '#fbbf24' }} />
+              : <Moon size={16} />
+            }
+          </button>
+
+          {/* User menu */}
+          {user ? (
+            <div style={{ position: 'relative' }} ref={userRef}>
+              <button
+                className="nd-icon-btn"
+                onClick={() => setShowUserMenu(v => !v)}
+                title={user}
+                style={{
+                  width: 'auto',
+                  padding: '0 12px',
+                  gap: 6,
+                  fontSize: '0.875rem',
+                  fontWeight: 600,
+                  color: 'var(--text-primary)',
+                }}
+              >
+                <div style={{
+                  width: 24, height: 24,
+                  borderRadius: '50%',
+                  background: 'var(--accent-subtle)',
+                  border: '1px solid var(--accent-border)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent)',
+                }}>
+                  {user[0].toUpperCase()}
                 </div>
-                <div id="genreDiv" className="flex flex-col items-center">
-                    <span id="genre"
-                        onClick={() => {
-                            showGenreCol ? hideGenreCol() : displayGenreCol();
-                        }}
-                        className="text-lg"
-                    >
-                        Genre
-                    </span>
-
-                    {showGenreCol && animatedGenreCol && (
-                        <div id="genreCol" className={`text-center w-full mx-5 ${animatedGenreCol ? "show" : ""}`}>
-                            {Genres.map((item, index) => {
-                                return (
-                                    <div
-                                        onClick={() => {
-                                            setSelectedGenre(item.name)
-                                        }}
-                                        id="genreTypes" className="py-1" key={index}>
-                                        <span className="text-md w-full">{item.name}</span>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    )}
+                {user}
+                <ChevronDown size={12} />
+              </button>
+              {showUserMenu && (
+                <div
+                  className="nd-genre-menu"
+                  style={{ right: 0, left: 'auto', transform: 'none', minWidth: 160 }}
+                >
+                  <div style={{
+                    padding: '8px 12px 12px',
+                    borderBottom: '1px solid var(--border-default)',
+                    marginBottom: 4,
+                  }}>
+                    <p style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+                      {user}
+                    </p>
+                    <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: '2px 0 0' }}>Signed in</p>
+                  </div>
+                  <Link to="/dashboard" className="nd-genre-item" onClick={() => setShowUserMenu(false)} style={{ textDecoration: 'none', color: 'var(--text-primary)' }}>
+                    <User size={14} />
+                    My Dashboard
+                  </Link>
+                  <button className="nd-genre-item" onClick={handleLogout} style={{ color: 'var(--danger)' }}>
+                    <LogOut size={14} />
+                    Log out
+                  </button>
                 </div>
-                <div className="">
-
-                    {user ? <button onClick={displayLogOutPage} className="button px-[20px] py-[5px]">{user}</button> : <Link to={"/login"}>
-                        <button className="button px-[20px] py-[5px]">Login</button>
-                    </Link>}
-
-                    {(checkCount % 2 == 0) && (
-                        <div className="py-2 border-2 absolute flex justify-center">
-                            <Link to={"/login"}>
-                                <button onClick={removeDetails} className="button px-[20px] py-[5px]">Log Out</button>
-                            </Link>
-                        </div>
-                    )}
-                </div>
+              )}
             </div>
-        </>
-    );
+          ) : (
+            <Link to="/login" className="nd-btn nd-btn-primary nd-btn-sm">
+              Sign in
+            </Link>
+          )}
+        </div>
+      </div>
+    </nav>
+  </div>
+);
 };
 
 Header.propTypes = {
-    setSelectedGenre: Function,
+  setSelectedGenre: PropTypes.func,
 };
 
 export default Header;

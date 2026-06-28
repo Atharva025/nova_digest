@@ -1,53 +1,67 @@
-import "../src/css/Footer.css";
-import Genres from "../src/components/Genre_Types";
-// import Team from "../src/components/Team_Members";
 import { Link } from "react-router-dom";
-const Footer = () => {
-    return (
-        <>
-            <div id="footerDes" className="mt-3 rounded-2xl">
-                <div className="flex justify-center mb-2 lg:text-3xl">
-                    <span className="text-center">Original Content and News</span>
-                </div>
+import { Newspaper } from 'lucide-react';
+import Genres from "../src/components/Genre_Types";
 
-                <div className="flex justify-between">
-                    <div className="flex flex-col text-sm font-bold gap-y-2 lg:text-xl">
-                        <span className="">Name</span>
-                        <Link to={"/about_us"} className=" hover:text-blue-700">About Us</Link>
-                    </div>
+const GENRE_ICONS = {
+  Politics: '🏛️', Sports: '⚽', Movies: '🎬',
+  Finance: '📈', International: '🌍', National: '🇮🇳',
+};
 
-                    <div className="flex flex-col text-xs items-center lg:text-xl">
-                        <p className="text-balance text-md text-center mb-5">NewsAppName is a news website which allows you to read news articles from various hot topics around the world.</p>
-                        <div className="flex gap-2 text-center px-5">
-                            {Genres.map((item, index) => {
-                                return (
-                                    <div
-                                        id="genreTypes" className="py-1" key={index}>
-                                        <span>{item.name}</span>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
+const Footer = () => (
+  <footer className="nd-footer">
+    <div className="nd-footer-inner">
+      {/* Brand */}
+      <div>
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 6,
+          fontSize: '1.125rem',
+          marginBottom: 6,
+        }}>
+          <Newspaper size={16} style={{ color: 'var(--accent)' }} />
+          <span className="nd-logo-text">NovaDigest</span>
+        </div>
+        <p className="nd-footer-copy" style={{ maxWidth: 260, lineHeight: 1.6 }}>
+          A curated news reader. We pull real-time articles from across the web — no content stored on our servers.
+        </p>
+      </div>
 
-                    <div className="flex w-[200px] items-center text-xs">
-                        <p>NewsAppName does not store any news articles on our server. We simply render it using API.</p>
-                    </div>
-                </div>
-                {/* <div className="flex justify-center">
-                    Made By-
-                    {Team.map((item, index) => {
-                        return (
-                            <div className="px-1" key={index}>
-                                {item.name}
-                            </div>
-                        )
-                    })}
-                </div> */}
-            </div>
-        </>
-    )
-}
+      {/* Genres */}
+      <div>
+        <p style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          Topics
+        </p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+          {Genres.map(g => (
+            <span key={g.name} className="nd-footer-copy" style={{ fontSize: '0.8125rem' }}>
+              {GENRE_ICONS[g.name]} {g.name}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Nav */}
+      <div>
+        <p style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          Pages
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <Link to="/home" style={{ fontSize: '0.875rem', color: 'var(--text-muted)', textDecoration: 'none' }} className="nd-footer-link">Feed</Link>
+          <Link to="/bookmarks" style={{ fontSize: '0.875rem', color: 'var(--text-muted)', textDecoration: 'none' }}>Saved</Link>
+          <Link to="/about_us" style={{ fontSize: '0.875rem', color: 'var(--text-muted)', textDecoration: 'none' }}>About</Link>
+        </div>
+      </div>
+    </div>
+
+    <div style={{
+      maxWidth: 1280, margin: '32px auto 0',
+      paddingTop: 24, borderTop: '1px solid var(--border-default)',
+      textAlign: 'center',
+    }}>
+      <p className="nd-footer-copy">
+        © {new Date().getFullYear()} NovaDigest · Built by Akberali, Saachi & Atharva
+      </p>
+    </div>
+  </footer>
+);
 
 export default Footer;
-
