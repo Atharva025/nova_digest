@@ -186,6 +186,7 @@ app.get("/api/user/profile/:username", async (req, res) => {
         res.status(200).json({
             username: user.username,
             genre: user.genre || [],
+            readGenres: user.readGenres || [],
             email: user.email || '',
             bookmarkCount: user.bookmarks ? user.bookmarks.length : 0,
             searchHistory: user.searchHistory || [],

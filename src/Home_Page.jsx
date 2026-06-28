@@ -25,6 +25,7 @@ const Home_Page = () => {
   useEffect(() => {
     if (arr.length > 0) {
       setGenres(arr);
+      setSelectedGenre(arr[0]);
     } else if (user) {
       // Sync genres from MongoDB user profile
       fetch(`/api/user/profile/${user}`)
@@ -32,6 +33,15 @@ const Home_Page = () => {
         .then(data => {
           if (data.genre && data.genre.length > 0) {
             setGenres(data.genre);
+          }
+          // Determine the user's top read genre based on database history
+          const history = data.readGenres || [];
+          if (history.length > 0) {
+            const sorted = [...history].sort((a, b) => b.count - a.count);
+            setSelectedGenre(sorted[0].name);
+          } else if (data.genre && data.genre.length > 0) {
+            // Default fallback: First registered preferred genre
+            setSelectedGenre(data.genre[0]);
           }
         })
         .catch(() => {});
