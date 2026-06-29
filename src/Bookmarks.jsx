@@ -37,10 +37,10 @@ const Bookmarks = () => {
       <main style={{ flex: 1 }}>
         {/* Page header */}
         <div style={{
-          padding: '56px 24px 36px',
+          padding: '48px 24px 32px',
           textAlign: 'center',
           borderBottom: '1px solid var(--border-default)',
-          background: 'radial-gradient(ellipse at 50% -20%, var(--accent-subtle) 0%, transparent 65%)',
+          background: 'var(--bg-primary)',
         }}>
           <div style={{
             width: 52, height: 52,

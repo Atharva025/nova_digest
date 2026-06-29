@@ -8,60 +8,60 @@
    DESIGN TOKENS
    ============================================ */
 :root {
-  --bg-primary:    #090d16;
-  --bg-secondary:  #0e1320;
-  --bg-card:       #131a2c;
-  --bg-elevated:   #1c253c;
-  --bg-subtle:     #263252;
+  --bg-primary:    #09090b;
+  --bg-secondary:  #09090b;
+  --bg-card:       #09090b;
+  --bg-elevated:   #18181b;
+  --bg-subtle:     #27272a;
 
-  --border-default: rgba(148, 163, 184, 0.08);
-  --border-strong:  rgba(148, 163, 184, 0.15);
+  --border-default: rgba(255, 255, 255, 0.06);
+  --border-strong:  rgba(255, 255, 255, 0.12);
 
-  --text-primary:   #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted:     #64748b;
-  --text-inverse:   #090d16;
+  --text-primary:   #f4f4f5;
+  --text-secondary: #a1a1aa;
+  --text-muted:     #71717a;
+  --text-inverse:   #09090b;
 
-  --accent:         #3b82f6; /* Slate Blue */
-  --accent-hover:   #2563eb;
-  --accent-subtle:  rgba(59, 130, 246, 0.06);
-  --accent-border:  rgba(59, 130, 246, 0.15);
+  --accent:         #f43f5e; /* Premium Rose Crimson */
+  --accent-hover:   #fda4af;
+  --accent-subtle:  rgba(244, 63, 94, 0.05);
+  --accent-border:  rgba(244, 63, 94, 0.15);
 
   --success:  #10b981;
   --warning:  #f59e0b;
   --danger:   #ef4444;
 
-  --radius-sm:  4px;
-  --radius-md:  8px;
-  --radius-lg:  12px;
-  --radius-xl:  16px;
-  --radius-full: 9999px;
+  --radius-sm:  0px;
+  --radius-md:  0px;
+  --radius-lg:  0px;
+  --radius-xl:  0px;
+  --radius-full: 0px;
 
-  --shadow-sm:  0 1px 2px rgba(0,0,0,0.05);
-  --shadow-md:  0 4px 12px rgba(0,0,0,0.15);
-  --shadow-lg:  0 10px 30px rgba(0,0,0,0.25);
-  --shadow-glow: 0 4px 16px rgba(59, 130, 246, 0.05);
+  --shadow-sm:  none;
+  --shadow-md:  none;
+  --shadow-lg:  none;
+  --shadow-glow: none;
 }
 
 body.light {
-  --bg-primary:    #f8fafc;
-  --bg-secondary:  #ffffff;
-  --bg-card:       #ffffff;
-  --bg-elevated:   #f1f5f9;
-  --bg-subtle:     #e2e8f0;
+  --bg-primary:    #fafcfd;
+  --bg-secondary:  #fafcfd;
+  --bg-card:       #fafcfd;
+  --bg-elevated:   #f4f4f5;
+  --bg-subtle:     #e4e4e7;
 
-  --border-default: rgba(15, 23, 42, 0.08);
-  --border-strong:  rgba(15, 23, 42, 0.12);
+  --border-default: rgba(9, 9, 11, 0.08);
+  --border-strong:  rgba(9, 9, 11, 0.15);
 
-  --text-primary:   #0f172a;
-  --text-secondary: #475569;
-  --text-muted:     #64748b;
-  --text-inverse:   #f8fafc;
+  --text-primary:   #09090b;
+  --text-secondary: #52525b;
+  --text-muted:     #71717a;
+  --text-inverse:   #fafcfd;
 
-  --accent:         #2563eb;
-  --accent-hover:   #1d4ed8;
-  --accent-subtle:  rgba(37, 99, 235, 0.04);
-  --accent-border:  rgba(37, 99, 235, 0.12);
+  --accent:         #991b1b; /* Classic Deep Bordeaux Crimson */
+  --accent-hover:   #7f1d1d;
+  --accent-subtle:  rgba(153, 27, 27, 0.04);
+  --accent-border:  rgba(153, 27, 27, 0.12);
 }
 
 /* ============================================
@@ -278,12 +278,10 @@ body.light .nd-navbar {
 
 .nd-btn-primary {
   background: var(--accent);
-  color: #fff;
+  color: var(--text-inverse);
 }
 .nd-btn-primary:hover {
   background: var(--accent-hover);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-glow);
 }
 
 .nd-btn-secondary {
@@ -344,7 +342,6 @@ body.light .nd-navbar {
 
 .nd-input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-subtle);
 }
 
 .nd-input-label {
@@ -376,17 +373,15 @@ body.light .nd-navbar {
    CARDS
    ============================================ */
 .nd-card {
-  background-color: var(--bg-card);
+  background-color: transparent;
   border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
+  border-radius: 0;
   overflow: hidden;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  transition: border-color 0.2s ease;
 }
 
 .nd-card:hover {
   border-color: var(--border-strong);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
 }
 
 .nd-news-card {
@@ -436,8 +431,8 @@ body.light .nd-navbar {
 
 .nd-news-card-bookmark:hover,
 .nd-news-card-bookmark.active {
-  background: rgba(59, 130, 246, 0.85);
-  color: #fff;
+  background: var(--accent);
+  color: var(--text-inverse);
   border-color: var(--accent);
 }
 
@@ -609,7 +604,6 @@ body.light .nd-navbar {
 
 .nd-search-input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-subtle);
 }
 
 .nd-search-icon {
@@ -665,8 +659,7 @@ body.light .nd-navbar {
   align-items: center;
   justify-content: center;
   padding: 24px;
-  background: radial-gradient(ellipse at 50% 0%, rgba(59,130,246,0.08) 0%, transparent 70%),
-              var(--bg-primary);
+  background: var(--bg-primary);
 }
 
 .nd-auth-card {
@@ -720,8 +713,7 @@ body.light .nd-navbar {
    ============================================ */
 .nd-genre-page {
   min-height: 100vh;
-  background: radial-gradient(ellipse at 50% 0%, var(--accent-subtle) 0%, transparent 70%),
-              var(--bg-primary);
+  background: var(--bg-primary);
   padding: 48px 24px;
 }
 
@@ -789,7 +781,7 @@ body.light .nd-navbar {
 }
 
 .nd-genre-tile.selected .nd-genre-tile-overlay {
-  background: linear-gradient(to top, rgba(59, 130, 246, 0.5) 0%, rgba(59, 130, 246, 0.1) 60%, rgba(0, 0, 0, 0.05) 100%);
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0.05) 100%);
 }
 
 .nd-genre-tile-check {
@@ -1039,9 +1031,9 @@ body.light .nd-article-toolbar {
 /* ── TL;DR card ──────────────────────────────── */
 .nd-tldr-card {
   position: relative;
-  background: linear-gradient(135deg, rgba(59,130,246,0.10) 0%, rgba(129,140,248,0.08) 100%);
-  border: 1px solid var(--accent-border);
-  border-radius: var(--radius-xl);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
   padding: 24px 28px;
   margin-bottom: 40px;
   overflow: hidden;
@@ -1052,8 +1044,7 @@ body.light .nd-article-toolbar {
   position: absolute;
   top: 0; left: 0;
   width: 4px; height: 100%;
-  background: linear-gradient(180deg, var(--accent), #818cf8);
-  border-radius: 4px 0 0 4px;
+  background: var(--accent);
 }
 
 .nd-tldr-title {
@@ -1353,8 +1344,7 @@ body.light .nd-article-toolbar {
 .nd-auth-left {
   flex: 1.2;
   position: relative;
-  background: radial-gradient(circle at 80% 20%, var(--accent-subtle) 0%, transparent 60%),
-              var(--bg-secondary);
+  background: var(--bg-secondary);
   border-right: 1px solid var(--border-default);
   display: flex;
   flex-direction: column;
@@ -1436,11 +1426,11 @@ body.light .nd-article-toolbar {
 }
 
 .nd-logo-text {
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  background: linear-gradient(135deg, var(--text-primary) 40%, var(--accent) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-family: 'Lora', Georgia, serif;
+  font-weight: 700;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
 }
 
 /* ─── Reading Layout Accessibility ─── */

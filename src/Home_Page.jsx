@@ -89,8 +89,8 @@ const Home_Page = () => {
 
       {/* Search hero */}
       <div style={{
-        background: 'radial-gradient(ellipse at 50% -20%, var(--accent-subtle) 0%, transparent 65%)',
-        padding: '64px 24px 48px',
+        background: 'var(--bg-primary)',
+        padding: '56px 24px 40px',
         textAlign: 'center',
         borderBottom: '1px solid var(--border-default)',
       }}>
